@@ -14,7 +14,7 @@
   - [知识点](/JavaScript/index.md)
   - [面试题目](/JavaScript/javascript面试题.md)
 - TypeScript
-  - [知识点](/TypeScript/index.md)
+  - [知识点](/TypeScript/TypeScript知识点.md)
   - [面试题目](/TypeScript/TypeScript面试题.md)
 - Vue
   - [知识点](/Vue/index.md)
