@@ -3,7 +3,7 @@
 - JavaScript是什么？
   - JS是一种运行在客户端(比如:浏览器)中的编程语言。JavaScript 既能运行在 浏览器 中，也可以运行在 Node.js 中
 - TypeScript 是什么？
-  - TS是 JavaScript 的超集。TypeScript = **Type** + JavaScript **(为 JS 添加了类型系统)**。
+  - TS是 JavaScript 的超集 ,为 JS 添加了类型系统。TypeScript = Type + JavaScript。
 
 
 

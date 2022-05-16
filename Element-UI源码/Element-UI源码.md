@@ -1,3 +1,5 @@
+
+
 # Vue介绍
 
 ## Vue的安装
@@ -267,17 +269,434 @@ export default {
 
 # sass
 
-## @mixin和@include
+## sass简介
 
-sass官网：https://www.sasscss.com/documentation/at-rules/mixin
-
-比较好的解释：https://blog.csdn.net/qq_39490750/article/details/123844746 
-
-​								https://www.runoob.com/sass/sass-mixin-include.html
-
-人资项目的混入
+1. Sass 扩展了 CSS3，增加了规则、变量、混入、选择器、继承等等特性，使它的语法内部可以使用动态变量等，所以它更像一种极简单的动态语言。
+2. Sass 生成良好格式化的 CSS 代码，易于组织和维护。
 
 
+
+## 文件扩展名.sass与.scss的区别
+
+- sass
+  - 多行注释 / 单行注释 注释符号不必首尾呼应，只需缩进即可。
+  - 代码部分
+    - 缩进式语法
+    - 代码末端不需要写 `；` 。
+    - 引入文件不需要写双引号。
+    - 定义混入用 `=` 代替 `@mixin`，引用混入用 `+`  代替 `@include`
+
+sass代码展示：
+
+```scss
+@import base
+
+//混入
+=alter 
+  color: #000
+  background: #fff
+  
+.alert-warning
+  +alert //引用混入。
+  
+ul
+  font-size:16px
+  li
+  	list-style:none
+```
+
+
+
+- scss
+  - 多行注释需要首尾呼应
+  - 代码部分
+    - 嵌套式语法。
+    - 其他与sass相反。
+
+scss代码展示：
+
+```scss
+@improt "base";
+
+@mixin alert {
+  color: red;
+  background: #000;
+}
+
+.alert-warning {
+  @unclude alert;
+}
+
+ul {
+  font-size:16px;
+  li {
+    list-style:none;
+  }
+} 
+```
+
+
+
+## 变量
+
+- 定义变量：`$ 变量名:属性值` ；  使用变量：`$变量名` 。
+- 变量也可以套娃，比如我定义一个变量名为 `$cxk`，里面引用了 `$rapper`。
+
+代码展示：
+
+```scss
+$ rapper:red;
+$ cxk:1px soild $rapper;
+```
+
+
+
+## 嵌套
+
+注意：
+
+- 使用伪类选择器的时候，必须用上 `&` 符号。否则样式效果就会不生效。
+- 使用 ` —` 符号定义的样式名字，也可以使用  `&` 符号进行衔接嵌套。
+- 属性也可以写嵌套。
+
+嵌套代码展示：
+
+```scss
+.dataList {
+  li {
+    height: 20px;
+    width: 100px;
+    background-color: red;
+    margin-bottom: 5px;
+    // 相当于：.dataList li:hover{}
+    &:hover {
+      background-color: green;
+    }
+  }
+  // 相当于：.dataList-aaa{ }
+  & &-aaa {
+    height: 20px;
+    width: 100px;
+    background-color: orange;
+  }
+}
+```
+
+属性嵌套代码展示：
+
+```scss
+div{
+  height:100px;
+  font:{
+    family:'weiruanyahei';
+    size:20px;
+    weight:700;
+  }
+}
+
+//相当于
+div{
+  height:100px;
+  font-family:'weiruanyahei';
+  font-size:20px;
+  font-weight:700
+}
+```
+
+
+
+## 混入 @mixin
+
+- 定义
+
+  > Ps：参数可以省略。
+
+  ```
+  @mixin 变量名（参数1，参数2）{
+  	...样式...
+  }
+  ```
+
+- 使用方法： `@include 变量名`
+
+代码展示：
+
+```scss
+@mixin alter($text-color,$background-color){
+  color:$text-color;
+  background-color:$background-color;
+}
+
+.dataList {
+  @include alter(#fff,#000); //或者可以通过给制定参数赋值(此时可以不用在意顺序)，
+  													 //即 @include alter(,$background-color：#000，$text-color：#fff)
+}
+```
+
+相当于：
+
+```
+.dataList {
+  color: #fff;
+  background-color: #000;
+}
+```
+
+其他参考：https://www.runoob.com/sass/sass-mixin-include.html
+
+
+
+## 继承 @extend
+
+- 定义用法：`@extend 变量名`
+
+代码展示：
+
+```scss
+.alter{
+  color: #fff;
+}
+
+.datalist{
+  @extend .alter;
+  background-color: #000;
+}
+```
+
+相当于：
+
+```scss
+.alter, .datalist{
+  color: #fff;
+}
+
+.datalist{
+  background-color: #000;
+}
+```
+
+
+
+## 引入 @import
+
+- 定义用法：`@import: “…路径”;`
+
+> 注意：引入一个`.scss`后缀的文件作为自己的一部分，被引入的那个文件并不会转换成`.css`格式的，所以此文件命名要注意以下划线开头，如：`_base.scss` ，引入它的时候不用写下划线。
+
+代码展示：
+
+```scss
+建立一个文件叫 _base.scss，里面写上一些选择器和样式。
+
+另外一个文件中引入：@import: "base";
+```
+
+
+
+## 计算
+
+- 可以使用 `（ ）`  来提高运算的优先级。
+- 单位不可以重复。
+
+
+
+## @if
+
+- 定义语法：
+
+```scss
+@if 判断语句 {
+  ...样式...;
+}@else if 判断语句{
+  ...样式...;
+}@else{
+  ...样式...;
+}
+```
+
+代码示范：
+
+```scss
+$theme: "dark";
+
+.themeColor{
+  @if $theme == dark {
+    background-color: black;
+  }@else if $theme ==light {
+    background-color: white;
+  }#else{
+    background-color: grey;
+  }
+}
+```
+
+相当于：
+
+```scss
+.themeColor{
+  background-color: black;
+}
+```
+
+
+
+## @for
+
+- 定义用法：
+
+```scss
+方法一（结束值执行）：
+// 结束值 或者 开始值 都可以用变量控制。
+@for $变量名 from 开始值 through 结束值{
+  ...样式...
+}
+
+方法二（结束值不执行）：
+@for 变量名 from 开始值 to 结束值{
+  ...样式...
+}
+```
+
+代码展示：
+
+```scss
+$colimns:4;
+
+@for $i from 1 through $colimns {
+  .col-#{$i} {
+    width:100%/$colimns*$i;
+  }
+}
+```
+
+输出结果：
+
+```scss
+.col-1{
+  width:25%;
+}
+.col-2{
+  width:50%;
+}
+.col-3{
+  width:75%;
+}
+.col-4{
+  width:100%;
+}
+```
+
+
+
+## @each
+
+- 定义用法：
+
+```scss
+$变量名：参数1 参数2 参数3 ....；
+
+@each $key in $变量名 {
+  ..样式..
+}
+```
+
+代码展示：
+
+```scss
+$color: red green grey;
+
+@each $key in $color {
+  .box-#{$key}{
+    color:$key;
+  }
+}
+```
+
+相当于：
+
+```scss
+.box-red {
+	color:red;
+}
+.box-green {
+  color:green;
+}
+.box-grey {
+  color:grey;
+}
+```
+
+
+
+## @while
+
+- 定义用法：
+
+```scss
+@while 条件 {
+  ...样式...
+}
+```
+
+代码展示
+
+```scss
+$get
+@while $get<3 {
+   .box-#{$get}{
+    height:$get*1px;
+  }
+  $get:$get+1;
+}
+```
+
+相当于：
+
+```scss
+.box-1{
+  height: 1px;
+}
+
+.box-2{
+  height: 2px;
+}
+```
+
+
+
+
+
+## 自定义函数
+
+- 定义用法：
+
+```scss
+@function 名字(参数1，参数2，....){
+  ..样式..
+}
+```
+
+代码展示：
+
+```scss
+$colors:(light:#fff , dark:#000);
+
+@function colorFn($key){
+  @return map-get($colors,$key);
+}
+
+body{
+  background-color:colorFn(light);
+}
+```
+
+相当于：
+
+```scss
+body{
+  background-color:#fff;
+}
+```
 
 
 
