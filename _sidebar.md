@@ -11,7 +11,7 @@
   - [知识点](/CSS/index.md)
   - [面试题目](/CSS/css面试题.md)
 - JavaScript
-  - [知识点](/JavaScript/index.md)
+  - [知识点](/JavaScript/基础知识点.md)
   - [面试题目](/JavaScript/javascript面试题.md)
 - TypeScript
   - [知识点](/TypeScript/TypeScript知识点.md)

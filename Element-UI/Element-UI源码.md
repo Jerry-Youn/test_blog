@@ -1,5 +1,3 @@
-
-
 # Vue介绍
 
 ## Vue的安装
@@ -9,6 +7,8 @@
 > 可以引入`vue.js`文件 或者 cdn
 
 ## 声明式渲染
+
+
 
 # 渲染函数--render
 
@@ -26,7 +26,7 @@
 </h1>
 ```
 
-`<h1>标签`普通组件的写法：
+`<h1>标签` 普通组件的写法：
 
 ```javascript
 <script type="text/x-template" id="anchored-heading-template">
@@ -42,6 +42,8 @@
     <slot></slot>
   </h6>
 </script>
+
+//注册组件
 <script>
  Vue.component('anchored-heading', {
    template: '#anchored-heading-template', //注册组件的id
@@ -55,7 +57,7 @@
 </script>
 ```
 
-`<h1>标签`render函数的写法:
+`<h1>标签` render函数的写法:
 
 ```js
 Vue.component('anchored-heading', {
@@ -106,20 +108,20 @@ render: function (createElement) {
 
 ```js
 createElement(
-  // {String | Object | Function}
-  // 一个 HTML 标签名、组件选项对象，或者
-  // resolve 了上述任何一种的一个 async 函数。【必填项】。
+  	// {String | Object | Function}
+  	// 一个 HTML 标签名、组件选项对象，或者
+  	// resolve 了上述任何一种的一个 async 函数。【必填项】。
   'div',
 
-  // {Object}
-  // 一个与模板中 attribute 对应的数据对象。【可选】
+  	// {Object}
+  	// 一个与模板中 attribute 对应的数据对象。【可选】
   {
     下面会深入讲解。
   },
 
-  // {String | Array}
-  // 子级虚拟节点 (VNodes)，由 `createElement()` 构建而成，
-  // 也可以使用字符串来生成“文本虚拟节点”。【可选】
+  	// {String | Array}
+  	// 子级虚拟节点 (VNodes)，由 `createElement()` 构建而成，
+  	// 也可以使用字符串来生成“文本虚拟节点”。【可选】
   [
     '先写一些文字',
     createElement('h1', '一则头条'),
@@ -136,43 +138,50 @@ createElement(
 
 ```js
 {
-  // 与 `v-bind:class` 的 API 相同，
-  // 接受一个字符串、对象或字符串和对象组成的数组
+  	// 与 `v-bind:class` 的 API 相同，
+  	// 接受一个字符串、对象或字符串和对象组成的数组
   'class': {
     foo: true,
     bar: false
   },
-  // 与 `v-bind:style` 的 API 相同，
-  // 接受一个字符串、对象，或对象组成的数组
+    
+  	// 与 `v-bind:style` 的 API 相同，
+  	// 接受一个字符串、对象，或对象组成的数组
   style: {
     color: 'red',
     fontSize: '14px'
   },
-  // 普通的 HTML attribute
+    
+  	// 普通的 HTML attribute
   attrs: {
     id: 'foo'
   },
-  // 组件 prop
+    
+  	// 组件 prop
   props: {
     myProp: 'bar'
   },
-  // DOM property
+    
+  	// DOM property
   domProps: {
     innerHTML: 'baz'
   },
-  // 事件监听器在 `on` 内，
-  // 但不再支持如 `v-on:keyup.enter` 这样的修饰器。
-  // 需要在处理函数中手动检查 keyCode。
+    
+  	// 事件监听器在 `on` 内，
+  	// 但不再支持如 `v-on:keyup.enter` 这样的修饰器。
+  	// 需要在处理函数中手动检查 keyCode。
   on: {
     click: this.clickHandler
   },
-  // 仅用于组件，用于监听原生事件，而不是组件内部使用
-  // `vm.$emit` 触发的事件。
+    
+  	// 仅用于组件，用于监听原生事件，而不是组件内部使用
+  	// `vm.$emit` 触发的事件。
   nativeOn: {
     click: this.nativeClickHandler
   },
-  // 自定义指令。注意，你无法对 `binding` 中的 `oldValue`
-  // 赋值，因为 Vue 已经自动为你进行了同步。
+    
+  	// 自定义指令。注意，你无法对 `binding` 中的 `oldValue`
+  	// 赋值，因为 Vue 已经自动为你进行了同步。
   directives: [
     {
       name: 'my-custom-directive',
@@ -184,16 +193,19 @@ createElement(
       }
     }
   ],
-  // 作用域插槽的格式为
-  // { name: props => VNode | Array<VNode> }
+  	// 作用域插槽的格式为
+  	// { name: props => VNode | Array<VNode> }
   scopedSlots: {
     default: props => createElement('span', props.text)
   },
+    
   // 如果组件是其它组件的子组件，需为插槽指定名称
   slot: 'name-of-slot',
+    
   // 其它特殊顶层 property
   key: 'myKey',
   ref: 'myRef',
+    
   // 如果你在渲染函数中给多个元素都应用了相同的 ref 名，
   // 那么 `$refs.myRef` 会变成一个数组。
   refInFor: true
@@ -407,19 +419,20 @@ div{
 
 ## 混入 @mixin
 
-- 定义
+### 常见用法
 
-  > Ps：参数可以省略。
+定义混入：
 
-  ```
-  @mixin 变量名（参数1，参数2）{
-  	...样式...
-  }
-  ```
+```
+@mixin 变量名（参数1(可省略)，参数2...）{ 
+	...样式...
+}
+```
 
-- 使用方法： `@include 变量名`
+使用混入： `@include 变量名`
 
-代码展示：
+> 代码展示：
+>
 
 ```scss
 @mixin alter($text-color,$background-color){
@@ -429,11 +442,12 @@ div{
 
 .dataList {
   @include alter(#fff,#000); //或者可以通过给制定参数赋值(此时可以不用在意顺序)，
-  													 //即 @include alter(,$background-color：#000，$text-color：#fff)
+  													 //即 @include alter($background-color：#000，$text-color：#fff)
 }
 ```
 
-相当于：
+> 相当于：
+>
 
 ```
 .dataList {
@@ -443,6 +457,78 @@ div{
 ```
 
 其他参考：https://www.runoob.com/sass/sass-mixin-include.html
+
+### 拓展1
+
+- ###### 想要在混入中定义样式，配合`@content`和`#{$变量名}`使用。
+
+> 代码展示：
+
+```scss
+【A文件（定义混入）】
+@mixin b($block) {
+  //其中 $namespace=el
+  $B: $namespace+'-'+$block !global;
+
+  .#{$B} {
+    @content;
+  }
+}
+
+【B文件（使用混入）】
+@include b(row) {
+  position: relative;
+  box-sizing: border-box;
+  @include utils-clearfix;
+}
+```
+
+> 相当于：
+
+```scss
+.el-row{
+  position: relative;
+  box-sizing: border-box;
+}
+```
+
+
+
+### 拓展2
+
+- `@at-root`的作用：让后面的样式跳出目前层级到顶层。即调用子元素的样式时，外面不需要再包一层父元素的盒子。
+
+> 代码展示：
+
+```scss
+【A文件（定义混入）】
+@mixin m($变量1) {
+  ....
+
+  @at-root {
+   #{$变量2} {
+      @content;
+    }
+  }
+}
+
+【B文件（使用混入）】
+.el-row{
+  ....
+
+  @include m(flex) {
+   ....
+  }
+}
+```
+
+> 相当于
+
+```html
+<div class="el-row el-row--flex">我爱打代码</div>
+```
+
+
 
 
 
@@ -697,6 +783,41 @@ body{
   background-color:#fff;
 }
 ```
+
+
+
+# el-row组件
+
+## 知识点
+
+1. css的命名规范
+
+   > - 组件名在在前，比如“el-input”。
+   > - 组件的子元素用两个下划线，比如“el-input__inner”。
+   > - 修饰符会接到最后用两个中横线隔开，比如：“el-input--success”.
+   > - 表示状态的样式命名，加上前缀 "is-"，比如：“is-disabled”
+
+2. render函数
+
+   语法：`render: function (createElement, context) {}`
+
+3. 所有我们写的vue选项都会被放在vue实例属性$options中。比如：在组件中写下 `componentName: 'Elrow'`，我们可以通过`this.$options.componentName`获取到这个选项。
+
+4. 渲染函数`render(h)`中的h这代表creatElement函数。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
