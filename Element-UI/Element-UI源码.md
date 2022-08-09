@@ -283,8 +283,11 @@ export default {
 
 ## sass简介
 
-1. Sass 扩展了 CSS3，增加了规则、变量、混入、选择器、继承等等特性，使它的语法内部可以使用动态变量等，所以它更像一种极简单的动态语言。
-2. Sass 生成良好格式化的 CSS 代码，易于组织和维护。
+1. 嵌套 反应层级和约束
+2. 变量和计算 将少代码重复量
+3. Extend 和 Mixin 代码片段
+4. 循环适用于复杂有规律的样式
+5. import css 文件模块化
 
 
 
@@ -380,18 +383,21 @@ $ cxk:1px soild $rapper;
     width: 100px;
     background-color: red;
     margin-bottom: 5px;
-    // 相当于：.dataList li:hover{}
+    // &符号表示平级，相当于：.dataList li:hover{}
     &:hover {
       background-color: green;
     }
   }
-  // 相当于：.dataList-aaa{ }
+  // 相当于：.dataList.dataList-aaa{ }
   & &-aaa {
     height: 20px;
     width: 100px;
     background-color: orange;
   }
 }
+
+
+
 ```
 
 属性嵌套代码展示：
