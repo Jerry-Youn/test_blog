@@ -1,4 +1,4 @@
-## 「JS中的继承」⭐️
+### JS中的继承 ❌
 
 #### 原型链继承
 
@@ -245,7 +245,7 @@ console.log(res) //[10, NaN, NaN]
 
 
 
-## 「解释jsonp的原理,为何它不是真正的ajax ?」（❎）
+## 「解释jsonp的原理,为何它不是真正的ajax ?」❌
 
 - 浏览器的同源策略（服务端没有同源策略）和跨域。
 - 哪些html标签能绕过跨域？
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
-## 「`==`和`===`的不同」（❎）
+## 「`==`和`===`的不同」❌
 
 - `==` ：判断值相等，会自动转换数据类型
 - `===` ：不会自动转换数据类型；全等十判断数据类型和值。
@@ -423,7 +423,7 @@ console.log( func() ) //what?
 
 
 
-## 「关于作用域和自由变量的场景题」❎
+## 「关于作用域和自由变量的场景题」❌
 
 
 
@@ -518,19 +518,366 @@ window.addEventListener('error', function(event) {
 
 
 
-## 「获取当前页面url参数」❎
+## 「获取当前页面url参数」❌
 
 
 
-## 「将`url`参数解析为`JS`对象」
+## 「将`url`参数解析为`JS`对象」❌
 
 
 
+# for..in 和 for..of的区别 ✅
+
+## key 和 value
+
+for...in 遍历 key ；  for...of 遍历 value
+
+```js
+// 数组
+const arr = [10, 20, 30]
+for (let n of arr) {
+  console.log(n)；  // 10 , 20 , 30
+}
+
+for (let key in arr) {
+  console.log(key); // 0 ，1 ，2
+}
+
+// 字符串
+const str = 'abc'
+for (let s of str) {
+  console.log(s); // a, b, c
+}
+for (let key in str) {
+  console.log(key); // 0 , 1 , 2
+}
+
+// 函数
+function fn1() {
+  for (let argument in arguments) {
+    console.log(argument) // for...of 可以获取 value ，而 for...in 获取 key
+  }
+}
+fn1(10, 20, 30); //0, 1, 2
+
+function fn2() {
+  for (let argument of arguments) {
+    console.log(argument) // for...of 可以获取 value ，而 for...in 获取 key
+  }
+}
+fn2(10, 20, 30); //10, 20, 30
+
+
+// DOM对象
+const pList111 = document.querySelectorAll('p')
+for (let p of pList111) {
+  console.log(p) // for...of 可以获取 value（这里是DOM元素） ，而 for...in 获取 key。
+}
+
+const pList222 = document.querySelectorAll('p')
+for (let p in pList222) {
+  console.log(p) // for...of 可以获取 value ，而 for...in 获取 key（这里是pList222里面的健名）
+}
+```
 
 
 
+## 遍历对象
+
+for...in 可以遍历对象；for...of 不可以
+
+```js
+const obj = {
+  name: "双越",
+  city: "北京",
+};
+for (let val of obj) {
+  console.log(val); // 报错 Uncaught TypeError: obj is not iterable
+}
+
+for (let val in obj) {
+  console.log(val); // name , city
+}
+```
 
 
+
+## 遍历 Map/Set
+
+for...in 不可以遍历；for...of 可以遍历 Map/Set 
+
+```js
+const set1 = new Set([10, 20, 30])
+for (let n of set1) {
+  console.log(n); // 10 , 20 , 30。  注意：for...in...是无反应且无报错。
+}
+
+let map1 = new Map([
+  ['x', 10], ['y', 20], ['z', 3]
+])
+for (let n of map1) {
+  console.log(n) // ['x', 10], ['y', 20], ['z', 3]
+}
+```
+
+
+
+## 遍历 generator
+
+for...in 不可以遍历；for...of 可遍历 generator 
+
+```js
+function* foo(){
+  yield 10
+  yield 20
+  yield 30
+}
+for (let o of foo()) {
+  console.log(o)
+}
+```
+
+
+
+## for...in 和 for..of 遍历的本质
+
+### 对象的可枚举属性
+
+> 本质：**for...in 遍历一个对象的可枚举属性。**
+
+使用 `Object.getOwnPropertyDescriptors(需要鉴定的对象)` 可以获取对象的所有属性描述，看里面的 ` enumerable: true` 来判断该属性是否可枚举。
+
+对象，数组，字符串
+
+```js
+const obj1 = { x:100 }
+Object.getOwnPropertyDescriptors(obj1) //里面含有 enumerable: true
+```
+
+
+
+### 可迭代对象
+
+> 本质：**for...of 遍历一个可迭代对象。**
+
+其实就是迭代器模式，通过一个 `next` 方法返回下一个元素。
+
+该对象要实现一个 `[Symbol.iterator]` 方法，其中返回一个 `next` 函数，用于返回下一个 value（不是 key）。可以执行 `arr[Symbol.iterator]()` 看一下。
+
+JS 中内置迭代器的类型有 `String`， `Array` ，`arguments`， `NodeList` ，`Map` ，`Set`， `generator` 等。
+
+```js
+const map = new Map
+map[Symbol.iterator]() //MapIterator对象里面返回一个 next函数。
+
+const arr = [1,2,3,4,5]
+arr[Symbol.iterator]() //Array Iterator对象里面返回一个 next函数。
+```
+
+
+
+## 总结
+
+- for...in 遍历一个对象的**可枚举属性**，如对象、数组、字符串。针对属性，所以获得 key
+- for...of 遍历一个**可迭代对象**，如数组、字符串、Map/Set 。针对一个迭代对象，所以获得 value
+
+
+
+## 划重点
+
+“枚举” “迭代” 都是计算机语言的一些基础术语，目前搞不懂也没关系。但请一定记住 for...of 和 for...in 的不同表现。
+
+
+
+## 连环问：for await...of
+
+用于遍历异步请求的可迭代对象。
+
+```js
+// 像定义一个创建 promise 的函数
+function createTimeoutPromise(val) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(val)
+        }, 1000)
+    })
+}
+```
+
+如果你明确知道有几个 promise 对象，那直接处理即可
+
+```js
+(async function () {
+    const p1 = createTimeoutPromise(10)
+    const p2 = createTimeoutPromise(20)
+
+    const v1 = await p1
+    console.log(v1)
+    const v2 = await p2
+    console.log(v2)
+})()
+```
+
+如果你有一个对象，里面有 N 个 promise 对象，你可以这样处理
+
+```js
+(async function () {
+    const list = [
+        createTimeoutPromise(10),
+        createTimeoutPromise(20)
+    ]
+
+    // 方法一，使用 Promise.all 执行
+    Promise.all(list).then(res => console.log(res))
+
+    // 方法二，使用 for await ... of 遍历执行
+    for await (let p of list) {
+        console.log(p)
+    }
+
+    // 注意，如果用 for...of... 只能遍历出各个 promise 对象，而不能触发 await 执行
+})()
+```
+
+【注意】如果你想顺序执行，只能延迟创建 promise 对象，而不能及早创建。
+
+即，你创建了 promise 对象，它就立刻开始执行逻辑。
+
+```js
+方法一：
+(async function () {
+    const v1 = await createTimeoutPromise(100)
+    console.log(v1)
+    const v2 = await createTimeoutPromise(200)
+    console.log(v2)
+})()
+
+方法二：
+(async function () {
+    for (let n of [100, 200]) {
+        const v = await createTimeoutPromise(n)
+        console.log('v', v)
+    }
+})()
+```
+
+
+
+## 连环问：如何退出 for...in 和 for..of 的循环？
+
+- 如何退出`for..in..`和`for..of..`循环？
+  - 一般的for循环，可以用return、break
+  - foreach、map，只能用抛出错误的形式，退出。
+
+------
+
+
+
+# JS 严格模式和非严格模式 ✅
+
+## 设计初衷
+
+Javascript 设计之初，有很多不合理、不严谨、不安全之处，例如变量未定义即可使用 `n = 100`。严格模式用于规避这些问题。而现在 ES 规范已经普及，从语法上已经规避了这些问题。
+
+
+
+## 开启严格模式
+
+代码（或一个函数）一开始插入一行 `'use strict'` 即可开启严格模式
+
+```js
+// 全局开启严格模式
+'use strict' // 全局开启
+
+// 函数开启严格模式
+function fn() {
+  'use strict' // 某个函数开启
+}
+```
+
+一般情况下，开发环境用 ES 或者 Typescript ，打包出的 js 代码使用严格模式
+
+
+
+## 严格模式的不同
+
+严格模式的细则有很多，这里总结一些常用常见的
+
+
+
+### 全局变量必须声明
+
+```js
+'use strict'
+n = 10 // ReferenceError: n is not defined
+```
+
+
+
+### 禁止使用 `with`
+
+```js
+'use strict'
+var obj = { x: 10 }
+with (obj) {
+  // Uncaught SyntaxError: Strict mode code may not include a with statement
+  console.log(x)
+}
+```
+
+
+
+### 创建 eval 作用域
+
+⚠️非常不推荐使用！
+
+正常模式下，JS 只有两种变量作用域：全局作用域 + 函数作用域。严格模式下，JS 增加了 eval 作用域。
+
+**chrome 隐私模式下执行这段代码？？？**
+
+```js
+'use strict'
+var x = 10
+eval('var x = 20; console.log(x)')
+console.log(x)
+```
+
+
+
+### 禁止 this 指向全局作用域
+
+```js
+'use strict'
+function fn() {
+  console.log('this', this) // undefined
+}
+fn()
+```
+
+
+
+### 函数参数不能重名
+
+```js
+'use strict'
+
+// Uncaught SyntaxError: Duplicate parameter name not allowed in this context
+function fn(x, x, y) {
+  return
+}
+```
+
+
+
+## 总结
+
+- 全局变量必须声明
+- 禁止使用 with
+- 创建 eval 作用域
+- 禁止 this 指向全局作用域
+- 函数参数不能重名
+
+------
 
 
 
